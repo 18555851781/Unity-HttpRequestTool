@@ -5,6 +5,7 @@ using System;
 
 namespace MoLiFrame
 {
+    public delegate void StateChangedEvent(object sender, EnumObjectState newState, EnumObjectState oldState);
 
     //全局枚举对象
     public enum EnumObjectState
@@ -17,8 +18,6 @@ namespace MoLiFrame
         Closing
     }
 
-
-
     public enum EnumUIType:int
     {
         None    = -1,
@@ -28,11 +27,8 @@ namespace MoLiFrame
 
 
 
-    public class Defines 
+    public class Defines :MonoBehaviour
     {
-       public Defines()
-        {
 
-        }
     }
 }

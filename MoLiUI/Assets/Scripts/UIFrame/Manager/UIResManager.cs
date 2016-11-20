@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace MoLiFrame
+namespace MoLiFrame.UI
 {
     public class UIResManager : Singleton<UIResManager>
     {

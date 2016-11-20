@@ -3,8 +3,7 @@ using System.Collections;
 
 
 
-namespace MoLiFrame
-{
+
     public abstract class Singleton<T> where T : class,new()
     {
         protected static T _Instance = null;
@@ -34,4 +33,4 @@ namespace MoLiFrame
         }
 
     }
-}
+

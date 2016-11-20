@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using MoLiFrame;
+using MoLiFrame.UI;
 public class StartGame : MonoBehaviour {
 
 	// Use this for initialization

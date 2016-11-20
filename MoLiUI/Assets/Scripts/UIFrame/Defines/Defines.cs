@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 
-namespace MoLiFrame
+namespace MoLiFrame.UI
 {
     public delegate void StateChangedEvent(object sender, EnumObjectState newState, EnumObjectState oldState);
 

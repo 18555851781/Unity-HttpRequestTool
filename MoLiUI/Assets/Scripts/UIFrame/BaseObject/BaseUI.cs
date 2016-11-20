@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace MoLiFrame
+namespace MoLiFrame.UI
 {
     public abstract class BaseUI : MonoBehaviour 
     {
@@ -33,7 +33,7 @@ namespace MoLiFrame
         }
 
         protected EnumObjectState state = EnumObjectState.None;
-        public MoLiFrame.EnumObjectState State
+        public MoLiFrame.UI.EnumObjectState State
         {
             get { return this.state; }
             set 

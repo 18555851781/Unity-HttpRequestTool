@@ -4,8 +4,7 @@ using System;
 
 
 
-namespace MoLiFrame
-{
+
     public class SingletonException : Exception
     {
         public SingletonException(string msg)
@@ -15,4 +14,3 @@ namespace MoLiFrame
         }
 
     }
-}

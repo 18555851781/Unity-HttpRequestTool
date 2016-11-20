@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 
-namespace MoLiFrame
+namespace MoLiFrame.UI
 {
     public class UIManager : Singleton<UIManager>
     {

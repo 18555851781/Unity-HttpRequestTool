@@ -5,12 +5,19 @@ using System;
 
 namespace MoLiFrame
 {
-    public class UIManager 
+    public class UIManager : Singleton<UIManager>
     {
-	   public  UIManager()
-       {
+        public override void Init()
+        {
+            
+            Debug.Log("UIManager : Singleton<UIManager> Init");
+        }
 
-       }
+
+        public void Test()
+        {
+            Debug.Log("UIManager : Singleton<UIManager> Test");
+        }
     }
 
 }

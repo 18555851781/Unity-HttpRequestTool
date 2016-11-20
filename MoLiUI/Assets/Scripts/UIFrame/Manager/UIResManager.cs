@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIResManager : MonoBehaviour {
+namespace MoLiFrame
+{
+    public class UIResManager : Singleton<UIResManager>
+    {
+        public override void Init()
+        {
+            
+            Debug.Log(" UIResManager : Singleton<UIResManager> Init");
+        }
+	
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        public void Test()
+        {
+            Debug.Log(" UIResManager : Singleton<UIResManager> Test");
+        }
+    }
 }

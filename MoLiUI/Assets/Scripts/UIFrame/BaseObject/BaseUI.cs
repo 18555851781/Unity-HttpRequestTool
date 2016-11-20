@@ -32,7 +32,6 @@ namespace MoLiFrame
             }
         }
 
-
         protected EnumObjectState state = EnumObjectState.None;
         public MoLiFrame.EnumObjectState State
         {
@@ -88,8 +87,6 @@ namespace MoLiFrame
             GameObject.Destroy(CacheGameObject);
             OnRelease();
         }
-
-
 
         protected virtual void OnStart()
         {

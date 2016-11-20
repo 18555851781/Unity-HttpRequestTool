@@ -7,7 +7,7 @@ public class StartGame : MonoBehaviour {
 	void Start ()
     {
         UIResManager.Instance.Test();
-        UIManager.Instance.Test();
+        UIManager.Instance.Init();
         GameObject go = Instantiate<GameObject>(Resources.Load("Prefabs/TestOne") as GameObject);
         TestOne testTwo = go.GetComponent<TestOne>();
         if (testTwo == null)

@@ -31,9 +31,7 @@ namespace MoLiFrame
 
         public virtual void Init()
         {
-            Debug.Log("Singleton<T> where T : class,new()");
         }
 
     }
-
 }

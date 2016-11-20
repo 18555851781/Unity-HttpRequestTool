@@ -8,7 +8,6 @@ namespace MoLiFrame
         public override void Init()
         {
             
-            Debug.Log(" UIResManager : Singleton<UIResManager> Init");
         }
 	
 

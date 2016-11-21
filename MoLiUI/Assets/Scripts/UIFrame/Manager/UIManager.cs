@@ -28,7 +28,7 @@ namespace MoLiFrame.UI
                 get;
                 private set;
             }
-            UIInfoData(EnumUIType _uiType,string _path,params object[] _uiParams)
+           public UIInfoData(EnumUIType _uiType,string _path,params object[] _uiParams)
             {
                 this.UIType   = _uiType;
                 this.Path     = _path;
@@ -52,6 +52,13 @@ namespace MoLiFrame.UI
             stackOpenUIs = new Stack<UIInfoData>();
         }
 
+
+        /// <summary>
+        /// 获取UI组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="_uiType"></param>
+        /// <returns></returns>
         public T GetUI<T>(EnumUIType _uiType)where T :BaseUI
         {
             GameObject _retObj = GetUIObject(_uiType);
@@ -71,6 +78,69 @@ namespace MoLiFrame.UI
             }
             return _retObj;
         }
+
+
+        public void OpenUI(EnumUIType[] _uiTypes)
+        {
+            OpenUI(false, _uiTypes, null);
+        }
+
+
+        public void OpenUI(EnumUIType _uiType,params object[] _uiParams)
+        {
+            EnumUIType[] _uiTypes = new EnumUIType[1] { _uiType };
+            OpenUI(false, _uiTypes, _uiParams);
+        }
+
+
+
+
+        public void OpenUICloseOthers(EnumUIType[] _uiTypes)
+        {
+            OpenUI(true, _uiTypes, null);
+        }
+
+
+        public void OpenUICloseOthers(EnumUIType _uiType,params object[] _uiParams)
+        {
+            EnumUIType[] _uiTypes = new EnumUIType[1] { _uiType };
+            OpenUI(true, _uiTypes, _uiParams);
+        }
+
+
+        /// <summary>
+        /// 打开UI
+        /// </summary>
+        /// <param name="_isCloseOther"></param>
+        /// <param name="_uiTypes"></param>
+        /// <param name="_uiParams"></param>
+        public void OpenUI(bool _isCloseOther,EnumUIType[] _uiTypes,params object[] _uiParams)
+        {
+            //Close Others UI.
+            if(_isCloseOther)
+            {
+
+            }
+
+            //Push _uiTypes in stack.
+            for(int i = 0;i<_uiTypes.Length;i++)
+            {
+                EnumUIType _uiType = _uiTypes[i];
+                if(!dicOpenUIs.ContainsKey(_uiType))
+                {
+                    string _path = UIPathDefines.GetPrefabsPathByType(_uiType);
+                    stackOpenUIs.Push(new UIInfoData(_uiType,_path,_uiParams));
+                } 
+            }
+
+            //Open UI
+            if(stackOpenUIs.Count>0)
+            {
+
+            }
+
+        }
+
     }
 
 }

@@ -119,7 +119,7 @@ namespace MoLiFrame.UI
             //Close Others UI.
             if(_isCloseOther)
             {
-
+                CloseUIAll();
             }
 
             //Push _uiTypes in stack.
@@ -133,12 +133,91 @@ namespace MoLiFrame.UI
                 } 
             }
 
-            //Open UI
+            //Open UI,协程加载UI.
             if(stackOpenUIs.Count>0)
             {
 
             }
 
+        }
+
+        /// <summary>
+        /// 异步加载数据
+        /// </summary>
+        /// <returns>加载的数据</returns>
+        private IEnumerator<int> AsyncLoadData()
+        {
+            yield return 0;
+        }
+
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="_uiType"></param>
+        public void CloseUI(EnumUIType _uiType)
+        {
+            GameObject _uiObj = GetUIObject(_uiType);
+            if(null  == _uiObj)
+            {
+                dicOpenUIs.Remove(_uiType);
+            }
+            else
+            {
+                BaseUI _baseUI = _uiObj.GetComponent<BaseUI>();
+                if(null == _baseUI)
+                {
+                    GameObject.Destroy(_uiObj);
+                    dicOpenUIs.Remove(_uiType);
+                }
+                else
+                {
+                    _baseUI.StateChanged += CloseUIHandle;
+                    _baseUI.Release();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 关闭所有UI
+        /// </summary>
+        public void CloseUIAll()
+        {
+            List<EnumUIType> _listKey = new List<EnumUIType>(dicOpenUIs.Keys);
+            for(int i = 0 ; i<_listKey.Count;i++)
+            {
+                CloseUI(_listKey[i]);
+            }
+
+           // CloseUI(_listKey.ToArray());
+            dicOpenUIs.Clear();
+        }
+
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="_uiTypes"></param>
+        public void CloseUI(EnumUIType[] _uiTypes)
+        {
+            for(int i = 0; i<_uiTypes.Length;i++)
+            {
+                CloseUI(_uiTypes[i]);
+            }
+        }
+
+        /// <summary>
+        /// 关闭UI时启动的事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="newState"></param>
+        /// <param name="oldState"></param>
+        private void CloseUIHandle(object sender, EnumObjectState newState, EnumObjectState oldState)
+        {
+            if(newState == EnumObjectState.Closing)
+            {
+                BaseUI _baseUI = sender as BaseUI;
+                dicOpenUIs.Remove(_baseUI.GetUIType());
+                _baseUI.StateChanged -= CloseUIHandle;
+            }
         }
 
     }

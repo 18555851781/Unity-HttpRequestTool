@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using MoLiFrame.UI;
 
-public class TestOne : MonoBehaviour 
+public class TestOne : BaseUI 
 {
     private Button btn;
 	// Use this for initialization
@@ -14,13 +15,14 @@ public class TestOne : MonoBehaviour
 	
     private void OnClickBtn()
     {
-        GameObject   go = Instantiate<GameObject>(Resources.Load("Prefabs/TestTwo")as GameObject);
-        TestTwo testTwo = go.GetComponent<TestTwo>();
-        if(testTwo == null)
-        {
-            testTwo = go.AddComponent<TestTwo>();
-        }
-        Close();
+        UIManager.Instance.OpenUICloseOthers(EnumUIType.TestTwo);
+        //GameObject   go = Instantiate<GameObject>(Resources.Load("Prefabs/TestTwo")as GameObject);
+        //TestTwo testTwo = go.GetComponent<TestTwo>();
+        //if(testTwo == null)
+        //{
+        //    testTwo = go.AddComponent<TestTwo>();
+        //}
+       // Close();
     }
 
 
@@ -30,4 +32,9 @@ public class TestOne : MonoBehaviour
     }
 
 
+
+    public override EnumUIType GetUIType()
+    {
+        return EnumUIType.TestTwo;
+    }
 }

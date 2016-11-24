@@ -146,7 +146,7 @@ namespace MoLiFrame.UI
         public void SetUIWhenOpening(params object[] uiParams)
         {
             SetUI(uiParams);
-            StartCoroutine(AsyncOnLoadData());
+            CoroutineController.Instance.StartCoroutine(AsyncOnLoadData());
         }
 
         private IEnumerator AsyncOnLoadData()

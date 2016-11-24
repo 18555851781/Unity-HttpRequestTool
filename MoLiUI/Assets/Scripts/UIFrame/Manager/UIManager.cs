@@ -18,6 +18,13 @@ namespace MoLiFrame.UI
                 get;
                 private set;
             }
+
+            public Type ScriptType
+            {
+                get;
+                private set;
+            }
+
             public string Path
             {
                 get;
@@ -30,9 +37,10 @@ namespace MoLiFrame.UI
             }
            public UIInfoData(EnumUIType _uiType,string _path,params object[] _uiParams)
             {
-                this.UIType   = _uiType;
-                this.Path     = _path;
-                this.UIparams = _uiParams;
+                this.UIType     = _uiType;
+                this.Path       = _path;
+                this.UIparams   = _uiParams;
+                this.ScriptType = UIPathDefines.GetUIScriptByType(this.UIType);
             }
         }
 
@@ -78,6 +86,31 @@ namespace MoLiFrame.UI
             }
             return _retObj;
         }
+
+
+        /// <summary>
+        /// 预加载多个UI
+        /// </summary>
+        /// <param name="_uiTypes"></param>
+        public void PreloadUI(EnumUIType[] _uiTypes)
+        {
+            for(int i = 0; i<_uiTypes.Length;i++)
+            {
+                PreloadUI(_uiTypes[i]);
+            }
+        }
+
+
+        /// <summary>
+        /// 预加载UI
+        /// </summary>
+        /// <param name="_uiType"></param>
+        public void PreloadUI(EnumUIType _uiType)
+        {
+            string path = UIPathDefines.GetPrefabsPathByType(_uiType);
+            Resources.Load(path);
+        }
+
 
 
         public void OpenUI(EnumUIType[] _uiTypes)
@@ -136,9 +169,8 @@ namespace MoLiFrame.UI
             //Open UI,协程加载UI.
             if(stackOpenUIs.Count>0)
             {
-
+                CoroutineController.Instance.StartCoroutine(AsyncLoadData());
             }
-
         }
 
         /// <summary>
@@ -147,6 +179,36 @@ namespace MoLiFrame.UI
         /// <returns>加载的数据</returns>
         private IEnumerator<int> AsyncLoadData()
         {
+            UIInfoData _uiInfoData     = null;
+            UnityEngine.Object _prefabObj = null;
+            GameObject _uiObject       = null;
+
+            if(stackOpenUIs!=null&&stackOpenUIs.Count>0)
+            {
+                do
+                {
+                    _uiInfoData = stackOpenUIs.Pop();
+                    _prefabObj = Resources.Load(_uiInfoData.Path);
+                    if(_prefabObj!=null)
+                    {
+                        //_uiObject = NGUITools.AddChild(Game.Instance.mainUICamera.gameObject,_prefabObject);
+                        _uiObject = MonoBehaviour.Instantiate(_prefabObj) as GameObject;
+                        BaseUI _baseUI = _uiObject.GetComponent<BaseUI>();
+                        if(null == _baseUI)
+                        {
+                            _baseUI = _uiObject.AddComponent(_uiInfoData.ScriptType) as BaseUI;
+                        }
+
+                        if(null!=_baseUI)
+                        {
+                            _baseUI.SetUIWhenOpening(_uiInfoData.UIparams);
+                        }
+                        dicOpenUIs.Add(_uiInfoData.UIType, _uiObject);        
+                    }
+
+                } while (stackOpenUIs.Count > 0);
+
+            }
             yield return 0;
         }
 

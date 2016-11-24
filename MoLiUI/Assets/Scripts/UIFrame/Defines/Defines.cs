@@ -68,6 +68,26 @@ namespace MoLiFrame.UI
             return _path;
         }
 
+
+
+        public static System.Type GetUIScriptByType(EnumUIType _uiType)
+        {
+            System.Type _scriptType = null;
+            switch(_uiType)
+            {
+                case EnumUIType.TestOne:
+                    _scriptType = typeof(TestOne);
+                    break;
+                case EnumUIType.TestTwo:
+                    _scriptType = typeof(TestTwo);
+                    break;
+                default:
+                    Debug.Log("Not Find EnumUIType! type:" + _uiType.ToString());
+                    break;
+            }
+            return _scriptType;
+        }
+
     }
 
 

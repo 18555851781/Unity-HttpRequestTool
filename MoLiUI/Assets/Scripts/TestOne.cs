@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using MoLiFrame.UI;
+using MoLiFrameWork.UI;
 
 public class TestOne : BaseUI 
 {

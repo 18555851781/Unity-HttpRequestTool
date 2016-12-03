@@ -5,22 +5,119 @@ using System;
 
 namespace MoLiFrameWork.UI
 {
+    public class AssetInfo
+    {
+        private UnityEngine.Object _Object;
+        public Type AssetType { get; set; }
+        public string Path { get; set; }
+        public bool IsLoaded
+        {
+            get
+            {
+                return null != _Object;
+            }
+            private set { }
+        }
+
+
+        public UnityEngine.Object AssetObject
+        {
+            get
+            {
+                if(null==_Object)
+                {
+                    return Resources.Load(Path);
+                }
+                return _Object;
+            }
+        }
+
+        public IEnumerator GetAsyncObject(Action <UnityEngine.Object> _loaded)
+        {
+
+            return GetAsyncObject(_loaded, null);
+        }
+
+        public IEnumerator GetAsyncObject(Action<UnityEngine.Object> _loaded,Action<float> _progress)
+        {
+            if(null!=_Object)
+            {
+                _loaded(_Object);
+                yield break;
+            }
+
+            ResourceRequest _resRequest = Resources.LoadAsync(Path);
+
+            //
+            while(_resRequest.progress<0.9f)
+            {
+                if (null != _progress)
+                {
+                    _progress(_resRequest.progress);
+                }
+                    yield return null;
+                
+            }
+
+            //
+            while(!_resRequest.isDone)
+            {
+                if(null!=_progress)
+                {
+                    _progress(_resRequest.progress);
+                }
+                yield return null;
+            }
+
+
+            //
+            _Object = _resRequest.asset;
+            if(null != _loaded)
+            {
+                _loaded(_Object);
+
+            }
+            yield return _resRequest;
+
+        }
+
+    }
+
+
+
     public class UIResManager : Singleton<UIResManager>
     {
-        private Dictionary<string, GameObject> dicAssetInfo =null;
+        private Dictionary<string, AssetInfo> dicAssetInfo = null;
 
 
 
         public override void Init()
         {
-            dicAssetInfo = new Dictionary<string, GameObject>();
+            dicAssetInfo = new Dictionary<string, AssetInfo>();
+
+            //Resources.LoadAsync();
         }
 	
-        public GameObject LoadInstance(string _path)
+        public UnityEngine.Object LoadInstance(string _path)
         {
-
-
-
+            UnityEngine.Object _retObj = null;
+            UnityEngine.Object _obj    = Load(_path);
+            if(null != _obj)
+            {
+                _retObj = MonoBehaviour.Instantiate(_obj);
+                if (null != _retObj)
+                {
+                    return _retObj;
+                }
+                else
+                {
+                    Debug.LogError("Error: null Instance _retObj.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Error:null Resources Load return _obj");
+            }
             return null;
         }
 
@@ -67,8 +164,16 @@ namespace MoLiFrameWork.UI
          
         public UnityEngine.Object Load(string _path)
         {
-            Load(_path, null,null);
-            return null;
+            if(string.IsNullOrEmpty(_path))
+            {
+                Debug.LogError("Error:null _path name");
+                return null;
+            }
+            
+            //Load Res ....
+            UnityEngine.Object _retObj = null;
+
+            return _retObj;
         }
 
         public void Load(string _path,Action<UnityEngine.Object> _loaded)
